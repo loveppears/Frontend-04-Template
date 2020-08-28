@@ -24,12 +24,12 @@
 </body>
 <script>
     let pattern = [
-        [0, 1, 0],
         [0, 2, 0],
+        [0, 1, 0],
         [0, 0, 0],
     ]
 
-    let color = 2;
+    let color = 1;
 
     function show() {
         let board = document.getElementById("board");
@@ -172,6 +172,6 @@
         }
     }
     show(pattern);
-    console.log(bestChoice(pattern, color));
+    // console.log(bestChoice(pattern, color));
 </script>
 </html> 
