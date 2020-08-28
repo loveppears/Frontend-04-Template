@@ -24,12 +24,12 @@
 </body>
 <script>
     let pattern = [
-        [2, 0, 0],
         [0, 1, 0],
+        [0, 2, 0],
         [0, 0, 0],
     ]
 
-    let color = 1;
+    let color = 2;
 
     function show() {
         let board = document.getElementById("board");
@@ -54,10 +54,21 @@
             alert(color === 2 ? "❌ is winner!" : "⭕️ is winner!");
         }
         color =  3 - color;
+        console.log(bestChoice(pattern, color));
         show();
-        if(willWin(pattern, color)) {
-            console.log(color == 2 ? "❌ is winner!" : "⭕️ is winner!");
+        computerMove();
+    }
+
+    function computerMove() {
+        let choice = bestChoice(pattern , color);
+        if(choice.point) {
+            pattern[choice.point[1]][choice.point[0]] = color;
         }
+        if(check(pattern, color)) {
+            alert(color == 2 ? "❌ is winner!" : "⭕️ is winner!")
+        }
+        color = 3 - color;
+        show();
     }
 
     function check(pattern, color) {
@@ -120,12 +131,47 @@
                 let tmp = clone(pattern);
                 tmp[i][j] = color;
                 if(check(tmp, color)) {
-                    return true;
+                    return [j, i];
                 }
             }
         }
-        return false;
+        return null;
+    }
+
+    function bestChoice(pattern, color) {
+        let p;
+        if(p = willWin(pattern, color)) {
+            return {
+                point: p,
+                result: 1
+            }
+        }
+        let result = -2;
+        let point = null;
+        outer:for(let i = 0; i < 3; i++) {
+            for(let j = 0; j < 3; j++) {
+                if(pattern[i][j]) {
+                    continue;
+                }
+                let  tmp = clone(pattern);
+                tmp[i][j] = color;
+                let opp = bestChoice(tmp, 3 - color);
+
+                if(-opp.result > result) {
+                    result = -opp.result;
+                    point = [j, i];
+                }
+                if(result === 1) {
+                    break outer;
+                }
+            }
+        }
+        return {
+            point: point,
+            result: point ? result : 0
+        }
     }
     show(pattern);
+    console.log(bestChoice(pattern, color));
 </script>
-</html>
+</html> 
