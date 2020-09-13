@@ -47,3 +47,12 @@ function toUTF8Array(str) {
     return utf8;
 }
 ```
+
+## Chapter 9
+
+```Javascript
+Class Human{
+     hurt(damage){}
+}
+```
+
